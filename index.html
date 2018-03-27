@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="import" href="table-v1.html">
+</head>
+<body>
+  <my-table>
+    <h2 slot="title">Table Title</h2>
+  </my-table>
+  <button>Add table rows</button>
+  <p>Selected names: <span>[]</span></p>
+</body>
+<script>
+  const button = document.querySelector('button')
+  const compo = document.querySelector('my-table')
+  const span = document.querySelector('span')
+  const selectedNames = []
+
+  const tableRows = [{
+    date: '2016-05-02',
+    name: 'Jack',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: 'Nick',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: 'Dean',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: 'Adam',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }]
+
+  button.addEventListener('click', () => {
+    compo.setAttribute('rows', JSON.stringify(tableRows))
+  })
+
+  compo.addEventListener('select-change', ({ detail }) => {
+    const { row, checked } = detail
+    const name = row.name
+
+    const index = selectedNames.indexOf(name)
+    if (index > -1 && !checked) {
+      selectedNames.splice(index, 1)
+    } else if (index === -1 && checked) {
+      selectedNames.push(name)
+    }
+
+    span.textContent = `[${selectedNames.join(', ')}]`
+  })
+</script>
+</html>

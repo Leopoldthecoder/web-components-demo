@@ -1,0 +1,49 @@
+<template>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td {
+      border: 1px solid #d6d9d3;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    ::content [slot="title"] {
+      text-align: center;
+    }
+  </style>
+  <content select="[slot='title']"></content>
+  <table></table>
+</template>
+
+<script src="./render.js"></script>
+<script>
+  (function() {
+    const template = document.currentScript.ownerDocument.querySelector('template')
+    const element = Object.create(HTMLElement.prototype, {
+      createdCallback: {
+        value() {
+          const shadowRoot = this.createShadowRoot()
+          const clone = document.importNode(template.content, true)
+          shadowRoot.appendChild(clone)
+
+          const rows = document.querySelector('my-table').getAttribute('rows')
+          render(shadowRoot.querySelector('table'), JSON.parse(rows || '[]'), this)
+        }
+      },
+
+      attributeChangedCallback: {
+        value(attr, oldVal, newVal) {
+          if (attr === 'rows') {
+            render(this.shadowRoot.querySelector('table'), JSON.parse(newVal), this)
+          }
+        }
+      }
+    })
+
+    document.registerElement('my-table', { prototype: element })
+  })()
+</script>
