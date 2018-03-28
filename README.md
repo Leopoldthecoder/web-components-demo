@@ -34,9 +34,9 @@ Event | Parameter
 select-change| { detail: { row, checked } }
 
 ## v0 vs. v1
-As the specs evolve, there're different writings for shadow DOMs, slots, custom element registrations, etc. I implemented the same table component in both old and new writings (I call them v0 and v1 respectively). You can switch the `href` prop in `index.html` to see the differences.
+As the specs evolve, there're different writings for shadow DOMs, slots, custom element registrations, etc. I implemented the same table component in both old and new writings (I call them v0 and v1 respectively).
 
-Note that in order for both components to work properly in Chrome, I didn't implement the v1 component with all new v1 features (e.g. slots) because some of them may cause error or simply won't work in the latest Chrome.
+Note that in order for both components to work properly in Chrome, I didn't implement the v1 component with all new v1 features (e.g. the new `<slot>` tag) because some of them may cause error or simply won't work in the latest Chrome.
 
 ## Oops
 One thing this demo doesn't cover is something called *customized built-in element* (you can find its definition in the custom elements spec). Both components in this repo are *autonomous custom element*, if you want to know the terminology.

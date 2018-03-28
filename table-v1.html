@@ -26,13 +26,25 @@
   class MyTable extends HTMLElement {
     constructor() {
       super()
+      this._rows = []
     }
 
     static get observedAttributes() { return ['rows'] }
+    
+    get rows() {
+      return this._rows
+    }
+
+    set rows(val) {
+      // in this setter you can execute `render` directly to update the table rows
+      // but here I'm taking a detour to demonstrate the `attributeChangedCallback` hook
+      this.setAttribute('rows', JSON.stringify(val))
+    }
 
     attributeChangedCallback(attr, oldVal, newVal) {
       // attr is always 'rows' due to observedAttributes. Changes of other attributes will not trigger this hook
-      render(this.shadowRoot.querySelector('table'), JSON.parse(newVal), this)
+      this._rows = JSON.parse(newVal)
+      render(this.shadowRoot.querySelector('table'), this.rows, this)
     }
 
     connectedCallback() {
@@ -40,8 +52,7 @@
       const clone = document.importNode(template.content, true)
       shadowRoot.appendChild(clone)
 
-      const rows = document.querySelector('my-table').getAttribute('rows')
-      render(shadowRoot.querySelector('table'), JSON.parse(rows || '[]'), this)
+      render(shadowRoot.querySelector('table'), this.rows, this)
     }
   }
 

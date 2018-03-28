@@ -39,7 +39,7 @@
   }]
 
   button.addEventListener('click', () => {
-    compo.setAttribute('rows', JSON.stringify(tableRows))
+    compo.rows = tableRows
   })
 
   compo.addEventListener('select-change', ({ detail }) => {
